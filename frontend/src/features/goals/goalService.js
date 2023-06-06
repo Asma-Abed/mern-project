@@ -1,20 +1,21 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const initialState = {
-  goals: [],
-  isError: false,
-  isSuccess: false,
-  isLoading: false,
-  message: '',
+const API_URL = '/api/goals/';
+
+const createGoal = (goalData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = axios.post(API_URL, goalData, config);
+
+  return res.data;
 };
 
-export const goalSlice = createSlice({
-  name: 'goal',
-  initialState,
-  reducers: {
-    reset: (state) => initialState,
-  },
-});
+const goalService = {
+  createGoal,
+};
 
-export const { reset } = goalSlice.actions;
-export default goalSlice.reducer;
+export default goalService;
